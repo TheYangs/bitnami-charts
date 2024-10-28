@@ -664,6 +664,11 @@ spec:
         - name: {{ .Values.primary.persistence.volumeName }}
           persistentVolumeClaim:
             claimName: {{ tpl .Values.primary.persistence.existingClaim $ }}
+  {{- else if and .Values.primary.persistence.hostPath.enabled .Values.primary.persistence.hostPath.path }}
+        - name: {{ .Values.primary.persistence.volumeName }}
+          hostPath:
+            path: {{ .Values.primary.persistence.hostPath.path }}
+            type: {{ .Values.primary.persistence.hostPath.type | default "DirectoryOrCreate" }}
   {{- else if not .Values.primary.persistence.enabled }}
         - name: {{ .Values.primary.persistence.volumeName }}
           emptyDir: {}
