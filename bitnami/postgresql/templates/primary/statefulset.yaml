@@ -665,7 +665,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ tpl .Values.primary.persistence.existingClaim $ }}
   {{- else if not .Values.primary.persistence.enabled }}
-    {{- if and .Values.primary.persistence.hostPath.path }}
+    {{- if and .Values.primary.persistence.hostPath.enabled }}
         - name: {{ .Values.primary.persistence.volumeName }}
           hostPath:
             path: {{ .Values.primary.persistence.hostPath.path }}
