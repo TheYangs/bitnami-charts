@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "postgresql.v1.primary.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  hosts:
+    - "postgres.homelab.local"
+  gateways:
+    - istio-system/homelab-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: {{ include "postgresql.v1.primary.fullname" . }}
+            port:
+              number: 5432
+      headers:
+        request:
+          add:
+            X-Envoy-External-Address: "postgres"
